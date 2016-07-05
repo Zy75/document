@@ -1,0 +1,29 @@
+
+2016/7
+
+ORB_SLAM2メモ
+
+ubuntu14.04.4 english version
+ROS indigo
+drone: ardrone2.0だが飛ばさずに手で持って移動させてSLAMのチェックまで。
+NotePC: LIFEBOOK AH77WW
+ORB_SLAM2: Monocularモード
+
+1. Pangolinのビルドで、shm_open shm_unlinkのundefined referenceがでても、デモがビルドできないだけ。libpangolin.soというのが本体で問題ない。
+
+3. ORB_SLAM2のROS exampleのビルドで、eigen coreというインクルードファイルがないと言われたら、-I/usr/include/eigen3をCMakefileLists.txtのCXX_flag?に追加。
+
+4. ORB_SLAM2のROS exampleのmonocularのsrcで、カメラのパスを変更。( /ardrone/front/image_raw　にする。）
+
+5. Pangolinで一度グラフィック関係のエラーが出たので、45b38c15fae075aec0e3e865780b5235b4055848 をチェックアウトして使った。
+
+6. ORB_SLAM2の実行のとき、マウスでMapViewrをいじると黒い帯状のちらつきが入った。このとき、ubuntu 14.04 日本語remixを使っていて、ubuntu14.04の最初のイメージだったので、アップデートをかけても、Hardware Enablement Stackやカーネルが新しくならないらしい。すると、PCのディスプレイのドライバば古くて、ちらつくと思う。だからその後、ubuntu14.04.4の英語版（本家）ポイントリリース４を使ったら解決した。
+
+7. ubuntu14.04.4本家は、notePCの内蔵wifiが不具合を発生させるようなので、ドライバであるath10k_pciをblacklistしたらネットワークの問題が解決した。
+***********************************************************************
+
+MAP save/load機能を追加してくれたMathewDennyという人がいて、それも動いた。
+
+MONOのrosrunの時、最後にfalseで通常起動、最後にMAP保存。trueで保存した地図をloadして開始。
+
+
