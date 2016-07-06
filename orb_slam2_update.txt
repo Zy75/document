@@ -1,7 +1,7 @@
 
 ＊＊＊＊＊＊＊＊＊ORB_SLAM2を試す＊＊＊＊＊＊＊＊＊＊＊＊
 
-1. はじめに
+** はじめに
 
 ドローン(quadcopter)を屋内の決められたコースを自動で飛ばすことをやりたかった。
 
@@ -15,7 +15,7 @@ SLAMでは、通常、機体に搭載したカメラ、ステレオカメラ、R
 今回は単眼カメラ（普通のカメラ）を機体に搭載し、SLAMを行う。
 
 
-2. SLAM
+** SLAM
 
 SLAMとはsimultaneous localization and mappingの略で、訳は”自己位置推定と地図作成を同時に行う”となる。
 
@@ -24,7 +24,7 @@ SLAMとはsimultaneous localization and mappingの略で、訳は”自己位置
 
 だから、SLAMのやり方は、人のやり方に近いのかもしれない。
 
-3. 過去のSLAMの研究
+** 過去のSLAMの研究
 
 SLAMの例としては、PTAMがある。PTAMはparallel tracking and mappingの略で、”自己位置追跡と地図作成の並列処理”が訳となる。
 ptamを使ったopen source softwareがあり、tum_ardroneというが、動かしたことがある。
@@ -43,12 +43,19 @@ ORB_SLAM2というソフトは単眼、ステレオ、RGBDの３種類のカメ�
 
 いままで挙げたのは、リアルタイム性を必要とするSLAMで、あとでまとめて処理すればいい場合は、structure from motionなどの技術がある。
 
-3. ORB_SLAM2
+** 技術(単眼 SLAM)
+
+カメラで撮った画像から特徴点(key points)を抜き出す。　初めに撮った画像と、時間がたってドローンが動いた後の画像、の両方から特徴点を抜き出す。
+ドローンが動いたあとの画像の特徴点は、初めの画像の特徴点から動きがある。　
+この２つの画像の特徴点の対応から、初めのカメラの位置と姿勢、動いた後のカメラの位置と姿勢、空間にある特徴点の位置の３つを三次元で構成できる。　
+そうすると、ドローンの位置と動きがわかるし、地図も作れる。この後の画像も利用し、三次元構成をして、ドローンの動きを追跡する。
+
+** ORB_SLAM2
 
 今回は、ORB_SLAM2を使うことにした。最大の理由は、地図の保存と再利用が可能だからだ。（ORB_SLAM2にこの機能を追加してくれた人がいる。）
 いままで挙げた他のソフトウェアはどれも地図の保存再利用ができない。今回の目的ではそれでは困る。
 
-4. ORB_SLAM2のソフトウェア
+** ORB_SLAM2のソフトウェア
 
 ORB_SLAM2は、３つのスレッドからなる。 tracking, local mapping, loop closingだ。
 
@@ -61,7 +68,7 @@ loop closingはカメラが一周して地図にループができたとき、�
 trackがlostした場合、つまり自分の位置がわからなくなったときは、
 relocalization(再定位）の機能があり、place recognition(位置認識）により回復する。
 
-4. 実行
+** 実行
 
 ubuntu14.04.4 english version
 ROS indigo
@@ -86,14 +93,14 @@ ORB_SLAM2を動かしてみる。結構ひんぱんにtrackがlostするが、�
 最初の目標は、決められたコースを飛ばすことだったが、
 地図の中で自己位置を認識させたたのであと一歩だと思う。
 
-6. メモ（ビルド）
+** メモ（ビルド）
 
 ROS exampleのビルドで、
 eigen coreというinclude fileがないというエラーが出たら、
 Examples/ROS/ORB_SLAM2/CMakeLists.txtの13行あたりのCMAKE_CXX_FLAGSに-I/usr/include/eigen3を追加する。
 
 
-7. メモ（ソースコードについて）
+** メモ（ソースコードについて）
 
 mspXXX メンバーでセット（集合？）でポインタ
 vpXXX　ベクトルでポインタ
