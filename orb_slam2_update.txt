@@ -30,11 +30,14 @@ ptamを使ったopen source softwareがあり、tum_ardroneというが、動か
 
 リアルタイム用途では、その後のSLAMのソフトウェアはptamをベースにしたものが多いらしい。
 
-LSD-SLAMは、large scale direct monocular slamで、このソフトウェアはdirect methodを使い画像全体を使うことに特徴がある。いままでは特徴点を用いることが一般的だった。
+LSD-SLAMは、large scale direct monocular slamで、このソフトウェアはdirect methodを使い画像全体を使うことに特徴がある。
+いままでは特徴点を用いることが一般的だった。
 
-SVOは、fast semi direct monocular visual odometryで（monocular：単眼）、このソフトウェアは品質が高いと評判がいい。しかし、下向きにつけたカメラ用に作られているので、今回は使えない。
+SVOは、fast semi direct monocular visual odometryで（monocular：単眼）、このソフトウェアは品質が高いと評判がいい。
+しかし、下向きにつけたカメラ用に作られているので、今回は使えない。
 
-ORB_SLAMは、特徴点検出にORBを使っている。ORB_SLAMは単眼カメラ専用だったが、ORB_SLAM2というソフトは単眼、ステレオ、RGBDの３種類のカメラをサポートしている。
+ORB_SLAMは、特徴点検出にORBを使っている。ORB_SLAMは単眼カメラ専用だったが、
+ORB_SLAM2というソフトは単眼、ステレオ、RGBDの３種類のカメラをサポートしている。
 
 いままで挙げたのは、リアルタイム性を必要とするSLAMで、あとでまとめて処理すればいい場合は、structure from motionなどの技術がある。
 
