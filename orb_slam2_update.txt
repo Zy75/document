@@ -1,0 +1,94 @@
+
+1. はじめに
+
+ドローン(quadcopter)を屋内の決められたコースを飛ばすことをやりたかった。
+
+屋外ではGPSを使って実現できるが、屋内では電波が入らなかったり、誤差が大きいため使えない。
+
+外部カメラで撮影するなど、外部からドローンの位置を把握する方法もある。これは屋内測位の技術を使って解決する方法だ。
+
+他の方法としては、屋内の3D地図を作って同時に自分の位置を知るSLAMという技術がある。
+SLAMでは、通常、機体に搭載したカメラ、ステレオカメラ、RGBDカメラ、LIDARなどがセンサとして使われる。
+
+今回は単眼カメラ（普通のカメラ）を機体に搭載し、SLAMを行う。
+
+
+2. SLAM
+
+SLAMとはsimultaneous localization and mappingの略で、訳は”自己位置推定と地図作成を同時に行う”となる。
+
+人が決められたコースを歩くとき、人は脳内で周囲の地図を認
+識していて、その中で自分の位置を把握していると思う。
+
+だから、SLAMのやり方は、人のやり方に近いのかもしれない。
+
+3. 過去のSLAMの研究
+
+SLAMの例としては、PTAMがある。PTAMはparallel tracking and mappingの略で、”自己位置追跡と地図作成の並列処理”が訳となる。
+ptamを使ったopen source softwareがあり、tum_ardroneというが、動かしたことがある。
+しかしptamは、ARを用途にしていて、小さな限られた空間でしか動かない。
+
+リアルタイム用途では、その後のSLAMのソフトウェアはptamをベースにしたものが多いらしい。
+
+LSD-SLAMは、large scale direct monocular slamで、このソフトウェアはdirect methodを使い画像全体を使うことに特徴がある。いままでは特徴点を用いることが一般的だった。
+
+SVOは、fast semi direct monocular visual odometryで（monocular：単眼）、このソフトウェアは品質が高いと評判がいい。しかし、下向きにつけたカメラ用に作られているので、今回は使えない。
+
+ORB_SLAMは、特徴点検出にORBを使っている。ORB_SLAMは単眼カメラ専用だったが、ORB_SLAM2というソフトは単眼、ステレオ、RGBDの３種類のカメラをサポートしている。
+
+いままで挙げたのは、リアルタイム性を必要とするSLAMで、あとでまとめて処理すればいい場合は、structure from motionなどの技術がある。
+
+3. ORB_SLAM2
+
+今回は、ORB_SLAM2を使うことにした。最大の理由は、地図の保存と再利用が可能だからだ。（ORB_SLAM2にこの機能を追加してくれた人がいる。）
+いままで挙げた他のソフトウェはどれも地図の保存再利用ができない。今回の目的ではそれでは困る。
+
+4. ORB_SLAM2のソフトウェア
+
+ORB_SLAM2は、３つのスレッドからなる。 tracking, local mapping, loop closingだ。
+
+trackingは、自己の位置を知る役目をはたす。
+
+local mappingは、周囲の地図を作り、周囲を把握する。
+
+loop closingはカメラが一周して地図にループができたとき、両側がずれているとダブってしまうのでこれを修正する。
+
+trackがlostした場合、つまり自分の位置がわからなくなったときは、
+relocalization(再定位）の機能があり、place recognition(位置認識）により回復する。
+
+4. 実行
+
+ubuntu14.04.4 english version
+ROS indigo
+drone ardrone2.0（テスト段階では手でもって動かした）(front cameraを使った）
+ORB_SLAM2: 単眼(monocular)モード
+
+
+
+MathewDennyというgithub IDの人がORB_SLAM2にMap save/load機能をつけてくれた。
+
+保存した地図を再利用するには、単眼では、Monoをrosrunするとき最後の引数にtrueを追加。　
+地図をゼロから作るとき（通常の場合）はfalseを追加。
+地図再利用のときは、localizationモードと言って、地図は固定で、自己位置推定のみONのモードを試してうまく動いた。
+
+MathewDenny版では、vocabularyはbinではなくORBvoc.txtでも良い。
+CMakeLists.txtを見ると、デフォルトで、bin_vocabularyというtoolをビルドするが、エラーが出るが、これはなくてもいい。
+
+ORB_SLAM2を動かしてみる。結構ひんぱんにtrackがlostするが、回復は可能。カーテンのような真っ白は苦手。
+
+地図を作って終了し、地図最利用モードで再起動して、ardrone2.0を手で持って動かした。
+すると、自己位置を正しく認識した。
+
+最初の目標は、決められたコースを飛ばすことだったが、
+地図の中で自己位置を認識させたたのであと一歩だと思う。
+
+6. メモ（ソースコードについて）
+
+mspXXX メンバーでセット（集合？）でポインタ
+vpXXX　ベクトルでポインタ
+
+Tcw　回転＋移動？
+tcw　移動
+Rcw　回転
+
+MathewDenny版のserializeとは、地図保存のためにデータを連続化することか？
