@@ -93,8 +93,9 @@ ORB_SLAM2を動かしてみる。結構ひんぱんにtrackがlostするが、�
 
 ** メモ（ビルド）
 
-https://github.com/raulmur/ORB_SLAM2
-https://github.com/MathewDenny/ORB_SLAM2
+
+ORB_SLAM2            https://github.com/raulmur/ORB_SLAM2
+Map save/loadつき    https://github.com/MathewDenny/ORB_SLAM2
 
 ROS exampleのビルドで、
 eigen coreというinclude fileがないというエラーが出たら、
@@ -103,6 +104,8 @@ Examples/ROS/ORB_SLAM2/CMakeLists.txtの13行あたりのCMAKE_CXX_FLAGSに-I/us
 MathewDenny版では、vocabularyはbinではなくORBvoc.txtでも良い。
 CMakeLists.txtを見ると、デフォルトで、bin_vocabularyというtoolをビルドする。
 だが、そもそもtoolsというディレクトリがなくエラーが出るが、ビルドしなくてもいい。
+
+ROS exampleのビルドでは、カメラのPATHを変更する。（ARDrone 2.0 の場合は、/ardrone/front/image_raw/)
 
 ** メモ（ソースコードについて）
 
@@ -114,3 +117,14 @@ tcw　移動
 Rcw　回転
 
 MathewDenny版のserializeとは、地図保存のためにデータを連続化することか？
+地図の保存のとき、map, map points, keyframesなども保存される。
+
+** 文献
+
+ORB-SLAM: a Versatile and Accurate Monocular SLAM System
+http://arxiv.org/pdf/1502.00956.pdf
+
+ORB-SLAM: Tracking and Mapping Recognizable Features
+http://vindelman.technion.ac.il/events/mvigro/MVIGRO2014/MurArtal14rss_ws.pdf
+
+
