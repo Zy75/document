@@ -3,13 +3,13 @@
 
 ** はじめに
 
-ドローン(quadcopter)を屋内の決められたコースを自動で飛ばすことをやりたかった。
+ドローン(４ロータヘリ)を屋内の決められたコースを自動で飛ばすことをやりたかった。
 
 屋外ではGPSを使って実現できるが、屋内では電波が入らなかったり、誤差が大きいため使えない。
 
 外部カメラで撮影するなど、外部からドローンの位置を把握する方法もある。これは屋内測位の技術を使って解決する方法だ。
 
-他の方法としては、屋内の3D地図を作って同時に自分の位置を知るSLAMという技術がある。
+あと、屋内の3D地図を作って同時に自分の位置を知るSLAMという技術がある。
 SLAMでは、通常、機体に搭載したカメラ、ステレオカメラ、RGBDカメラ、LIDARなどがセンサとして使われる。
 
 今回は単眼カメラ（普通のカメラ）を機体に搭載し、SLAMを行う。
@@ -70,20 +70,18 @@ relocalization(再定位）の機能があり、place recognition(位置認識�
 
 ** 実行
 
+
 ubuntu14.04.4 english version
 ROS indigo
 drone ardrone2.0（テスト段階では手でもって動かした）(front cameraを使った）
 ORB_SLAM2: 単眼(monocular)モード
 
 
-MathewDennyというgithub IDの人がORB_SLAM2にMap save/load機能をつけてくれた。
+MathewDennyというgithub userの人がORB_SLAM2にMap save/load機能をつけてくれた。
 
 保存した地図を再利用するには、単眼では、Monoをrosrunするとき最後の引数にtrueを追加。　
 地図をゼロから作るとき（通常の場合）はfalseを追加。
 地図再利用のときは、localizationモードと言って、地図は固定で、自己位置推定のみONのモードでスタートする。
-
-MathewDenny版では、vocabularyはbinではなくORBvoc.txtでも良い。
-CMakeLists.txtを見ると、デフォルトで、bin_vocabularyというtoolをビルドするが、エラーが出るが、これはなくてもいい。
 
 ORB_SLAM2を動かしてみる。結構ひんぱんにtrackがlostするが、回復は可能。カーテンのような真っ白は苦手。
 
@@ -95,10 +93,16 @@ ORB_SLAM2を動かしてみる。結構ひんぱんにtrackがlostするが、�
 
 ** メモ（ビルド）
 
+https://github.com/raulmur/ORB_SLAM2
+https://github.com/MathewDenny/ORB_SLAM2
+
 ROS exampleのビルドで、
 eigen coreというinclude fileがないというエラーが出たら、
 Examples/ROS/ORB_SLAM2/CMakeLists.txtの13行あたりのCMAKE_CXX_FLAGSに-I/usr/include/eigen3を追加する。
 
+MathewDenny版では、vocabularyはbinではなくORBvoc.txtでも良い。
+CMakeLists.txtを見ると、デフォルトで、bin_vocabularyというtoolをビルドする。
+だが、そもそもtoolsというディレクトリがなくエラーが出るが、ビルドしなくてもいい。
 
 ** メモ（ソースコードについて）
 
