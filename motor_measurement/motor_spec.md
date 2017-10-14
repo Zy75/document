@@ -47,7 +47,7 @@
 仮説だが原因は接触抵抗かもしれない。
 
 スペックが変わった可能性はないのか？
-データシートによって、normal voltage,nominal voltage,operating voltageと用語が違うし、その値も違うのは気になる。
+データシートによって、電圧は、normal voltage,nominal voltage,operating voltageと用語が違うし、その値も違うのは気になる。
 
 ![データ](dataP.png)
 
