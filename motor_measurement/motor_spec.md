@@ -44,10 +44,10 @@
 ブラシとコミューテータの間の接触抵抗は、回転数、電流やコンディションで変わるらしい。
 仮説だが原因は接触抵抗かもしれない。
 
-スペックが変わったとはどこにも書いていなかったので、その可能性は低いか？
-でもデータシートによって、normal voltage,nominal voltage,operating voltageと用語が違うし、その値も違うのは気になる。
+スペックが変わった可能性はないのか？
+データシートによって、normal voltage,nominal voltage,operating voltageと用語が違うし、その値も違うのは気になる。
 
-
+![データ](dataP.png)
 
 
 
