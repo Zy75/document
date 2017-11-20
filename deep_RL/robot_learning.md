@@ -15,6 +15,7 @@
 以下のプログラムを実行してみるとよくわかる。
 
 https://github.com/joschu/modular_rl
+
 https://gist.github.com/joschu/6de0710846dff7230543016fc7639f82
 
 ## 実際どうなのか？
