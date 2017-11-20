@@ -52,3 +52,4 @@ humanoidは、人型２足歩行ロボットの環境だ。一見難しそうだ
 5. Leveraging Demonstrations for Deep Reinforcement Learning on Robotics Problems with Sparse Rewards
 6. Curiosity-driven Exploration by Self-supervised Prediction
 7. Trust Region Policy Optimization
+8. Proximal Policy Optimization
